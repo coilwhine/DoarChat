@@ -8,16 +8,20 @@ import type {
 } from "../Models/User.model";
 
 class AuthService {
+  private readonly serverUrl = import.meta.env.VITE_SERVER_URL;
+
   public async register(user: RegistrationData): Promise<AuthResponse> {
-    await axios.post("http://localhost:5207/auth/register", {
-      username: user.email,
+    await axios.post(`${this.serverUrl}/auth/register`, {
+      name: user.name,
+      email: user.email,
       password: user.password,
     });
 
-    const { data: token } = await axios.post<string>(
-      "http://localhost:5207/auth/login",
-      { username: user.email, password: user.password },
+    const { data } = await axios.post<{ token: string }>(
+      `${this.serverUrl}/auth/login`,
+      { email: user.email, password: user.password },
     );
+    const token = data.token;
 
     return {
       token,
@@ -26,10 +30,11 @@ class AuthService {
   }
 
   public async login(loginData: AuthCredentials): Promise<AuthResponse> {
-    const { data: token } = await axios.post<string>(
-      "http://localhost:5207/auth/login",
-      { username: loginData.email, password: loginData.password },
+    const { data } = await axios.post<{ token: string }>(
+      `${this.serverUrl}/auth/login`,
+      { email: loginData.email, password: loginData.password },
     );
+    const token = data.token;
 
     return {
       token,

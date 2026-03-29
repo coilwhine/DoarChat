@@ -15,25 +15,25 @@ namespace doar_chat.Logic
     {
         private readonly AppDbContext _db = db;
         private readonly JwtOptions _jwtOptions = jwtOptions;
-        private readonly PasswordHasher<User> _passwordHasher = new();
+        private readonly PasswordHasher<TUser> _passwordHasher = new();
 
-        public async Task<User> RegisterAsync(string username, string password, string name)
+        public async Task<TUser> RegisterAsync(string email, string password, string name)
         {
-            if (string.IsNullOrWhiteSpace(username) ||
+            if (string.IsNullOrWhiteSpace(email) ||
                 string.IsNullOrWhiteSpace(password) ||
                 string.IsNullOrWhiteSpace(name))
             {
-                throw new ApiException(StatusCodes.Status400BadRequest, "Username, password, and name are required.");
+                throw new ApiException(StatusCodes.Status400BadRequest, "Email, password, and name are required.");
             }
 
-            var email = username.Trim().ToLowerInvariant();
-            var exists = await _db.Users.AnyAsync(u => u.Email == email);
+            email = email.Trim().ToLowerInvariant();
+            var exists = await _db.TUsers.AnyAsync(u => u.Email == email);
             if (exists)
             {
                 throw new ApiException(StatusCodes.Status409Conflict, "User already exists.");
             }
 
-            var user = new User
+            var user = new TUser
             {
                 Name = name.Trim(),
                 Email = email,
@@ -43,21 +43,21 @@ namespace doar_chat.Logic
 
             user.PasswordHash = _passwordHasher.HashPassword(user, password);
 
-            _db.Users.Add(user);
+            _db.TUsers.Add(user);
             await _db.SaveChangesAsync();
 
             return user;
         }
 
-        public async Task<string> LoginAsync(string username, string password)
+        public async Task<string> LoginAsync(string email, string password)
         {
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
-                throw new ApiException(StatusCodes.Status400BadRequest, "Username and password are required.");
+                throw new ApiException(StatusCodes.Status400BadRequest, "Email and password are required.");
             }
 
-            var email = username.Trim().ToLowerInvariant();
-            var user = await _db.Users.SingleOrDefaultAsync(u => u.Email == email);
+            email = email.Trim().ToLowerInvariant();
+            var user = await _db.TUsers.SingleOrDefaultAsync(u => u.Email == email);
 
             if (user is null)
             {
@@ -74,7 +74,7 @@ namespace doar_chat.Logic
             return token;
         }
 
-        public string GenerateToken(User user)
+        public string GenerateToken(TUser user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_jwtOptions.Key);

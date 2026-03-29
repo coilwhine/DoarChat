@@ -9,6 +9,11 @@ export interface AuthCredentials {
   password: string;
 }
 
+export interface AuthResponse {
+  token: string;
+  user: JwtPayload;
+}
+
 export interface JwtPayload {
   sub: string;
   email: string;
@@ -18,9 +23,4 @@ export interface JwtPayload {
   iat: number;
   iss: string;
   aud: string;
-}
-
-export interface AuthResponse {
-  token: string;
-  user: JwtPayload;
 }

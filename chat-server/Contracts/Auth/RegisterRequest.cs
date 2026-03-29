@@ -1,4 +1,4 @@
 namespace doar_chat.Contracts.Auth
 {
-    public record RegisterRequest(string Username, string Password, string Name);
+    public record RegisterRequest(string Email, string Password, string Name);
 }

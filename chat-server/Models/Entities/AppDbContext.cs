@@ -17,10 +17,11 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<TUser> TUsers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:Default");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=DoarChat;Trusted_Connection=True;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,9 +32,11 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<User>(entity =>
+        modelBuilder.Entity<TUser>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07FADE9F6A");
+
+            entity.ToTable("T_Users");
 
             entity.HasIndex(e => e.Email, "UQ__Users__A9D10534F9F35D8C").IsUnique();
 

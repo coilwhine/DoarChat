@@ -59,6 +59,29 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ClientCors", policy =>
+    {
+        var origins = builder.Configuration
+            .GetSection("Cors:AllowedOrigins")
+            .Get<string[]>();
+
+        if (origins is { Length: > 0 })
+        {
+            policy.WithOrigins(origins)
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+        else if (builder.Environment.IsDevelopment())
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -67,6 +90,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ApiExceptionMiddleware>();
+
+app.UseCors("ClientCors");
 
 app.UseHttpsRedirection();
 
