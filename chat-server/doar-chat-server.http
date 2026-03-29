@@ -1,0 +1,17 @@
+POST http://localhost:5207/auth/register
+Content-Type: application/json
+
+{
+  "username": "test@example.com",
+  "password": "P@ssw0rd!",
+  "name": "Test User"
+}
+
+###
+POST http://localhost:5207/auth/login
+Content-Type: application/json
+
+{
+  "username": "test@example.com",
+  "password": "P@ssw0rd!"
+}

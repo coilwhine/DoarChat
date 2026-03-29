@@ -1,0 +1,37 @@
+.AppFooter {
+  background: $color-white;
+  border-top: 0.0625rem solid $color-border;
+  margin-top: auto;
+
+  .inner {
+    max-width: $container-max;
+    margin: 0 auto;
+    padding: $size-20 $container-pad;
+    display: grid;
+    gap: $size-8;
+  }
+
+  .brand {
+    font-weight: 700;
+    color: $color-brand-red;
+  }
+
+  .links {
+    display: flex;
+    gap: $size-12;
+    flex-wrap: wrap;
+
+    a {
+      color: $color-text-muted;
+
+      &:hover {
+        color: $color-brand-red;
+      }
+    }
+  }
+
+  .meta {
+    color: $color-text-muted;
+    font-size: 0.875rem;
+  }
+}

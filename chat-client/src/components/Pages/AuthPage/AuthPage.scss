@@ -1,0 +1,33 @@
+.AuthPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $size-24;
+
+  .authForm {
+    display: flex;
+    flex-direction: column;
+    gap: $size-16;
+    padding: $size-12;
+    border-radius: $radius-md;
+    background-color: $color-white;
+    box-shadow: $shadow-md;
+    min-width: 23rem;
+    max-width: 90vw;
+
+    &.submitting {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .input-wrapper {
+      .input-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: $size-8;
+      }
+    }
+  }
+}

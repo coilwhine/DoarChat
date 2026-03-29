@@ -1,0 +1,39 @@
+.AppHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: $color-surface;
+  border-bottom: $size-2 solid $color-border;
+  box-shadow: $shadow-sm;
+
+  .inner {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: $size-12 $container-pad;
+    align-items: center;
+    gap: $size-16;
+  }
+
+  .brand {
+    font-weight: 700;
+    font-size: $font-xl;
+    color: $color-brand-red;
+    letter-spacing: 0.0125rem;
+  }
+
+  .nav {
+    display: flex;
+    gap: $size-16;
+    margin-right: auto;
+
+    a {
+      color: $color-text;
+      font-weight: $font-md;
+
+      &:hover {
+        color: $color-brand-red;
+      }
+    }
+  }
+}

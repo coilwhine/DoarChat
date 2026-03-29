@@ -1,0 +1,45 @@
+## Build outputs
+bin/
+obj/
+**/bin/
+**/obj/
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.pdb
+*.cache
+
+## Logs
+logs/
+*.log
+
+## Environment files
+.env
+.env.*
+!.env.example
+
+## App settings (keep a sanitized template)
+appsettings.json
+appsettings.*.json
+!appsettings.example.json
+
+## Rider / Resharper
+.idea/
+*.DotSettings.user
+
+## VS Code
+.vscode/
+
+## Visual Studio
+.vs/
+
+## OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+## Local data
+Data/
