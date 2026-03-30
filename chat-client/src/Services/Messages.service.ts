@@ -12,7 +12,17 @@ class MessagesService {
   }
 
   public async send(request: SendMessageRequest): Promise<Message> {
-    const { data } = await apiClient.post<Message>(`${this.baseRoute}/`, request);
+    const { data } = await apiClient.post<Message>(
+      `${this.baseRoute}/`,
+      request,
+    );
+    return data;
+  }
+
+  public async markAsRead(messageId: number): Promise<Message> {
+    const { data } = await apiClient.post<Message>(
+      `${this.baseRoute}/${messageId}/read`,
+    );
     return data;
   }
 }

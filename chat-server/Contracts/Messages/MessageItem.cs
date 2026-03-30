@@ -6,6 +6,5 @@ namespace doar_chat.Contracts.Messages
         int ReceiverUserId,
         string Content,
         DateTime SentAt,
-        DateTime? DeliveredAt,
         DateTime? ViewedAt);
 }

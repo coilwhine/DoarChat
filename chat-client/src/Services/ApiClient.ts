@@ -21,7 +21,20 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (axios.isAxiosError(error)) {
+      const serverMessage =
+        error.response?.data?.error ?? error.response?.data?.message;
+      const requestUrl = error.config?.url ?? "";
+      const isAuthRequest =
+        requestUrl.includes("/auth/login") ||
+        requestUrl.includes("/auth/register");
+
       if (error.response?.status === 401) {
+        if (isAuthRequest) {
+          return Promise.reject(
+            new Error(serverMessage ?? "Invalid email or password"),
+          );
+        }
+
         localStorageService.removeItem("auth");
         if (window.location.pathname !== "/auth") {
           window.location.href = "/auth";
@@ -29,8 +42,6 @@ apiClient.interceptors.response.use(
         return Promise.reject(new Error("Unauthorized"));
       }
 
-      const serverMessage =
-        error.response?.data?.error ?? error.response?.data?.message;
       if (serverMessage) {
         return Promise.reject(new Error(serverMessage));
       }

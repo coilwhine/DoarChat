@@ -1,9 +1,11 @@
 using System.Text;
 using doar_chat.EndPoints;
+using doar_chat.Hubs;
 using doar_chat.Logic;
 using doar_chat.Middleware;
 using doar_chat.Models.Entities;
 using doar_chat.Options;
+using doar_chat.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -26,6 +28,7 @@ builder.Services.AddSingleton(jwtOptions);
 builder.Services.AddScoped<AuthLogic>();
 builder.Services.AddScoped<UsersLogic>();
 builder.Services.AddScoped<MessagesLogic>();
+builder.Services.AddSingleton<IUserConnectionStore, UserConnectionStore>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
@@ -52,6 +55,19 @@ builder.Services
 
         options.Events = new JwtBearerEvents
         {
+            OnMessageReceived = (context) =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    path.StartsWithSegments("/hubs/chat"))
+                {
+                    context.Token = accessToken;
+                }
+
+                return Task.CompletedTask;
+            },
             OnTokenValidated = (context) =>
             {
                 Console.WriteLine(context);
@@ -60,12 +76,10 @@ builder.Services
         };
     });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+builder.Services.AddAuthorizationBuilder()
+    .SetFallbackPolicy(new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
-        .Build();
-});
+        .Build());
 
 builder.Services.AddCors(options =>
 {
@@ -79,7 +93,8 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins(origins)
                 .AllowAnyHeader()
-                .AllowAnyMethod();
+                .AllowAnyMethod()
+                .AllowCredentials();
         }
         else if (builder.Environment.IsDevelopment())
         {
@@ -101,7 +116,10 @@ app.UseMiddleware<ApiExceptionMiddleware>();
 
 app.UseCors("ClientCors");
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -111,5 +129,6 @@ app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 app.MapAuthEndpoints();
 app.MapUsersEndpoints();
 app.MapMessagesEndpoints();
+app.MapHub<ChatHub>("/hubs/chat");
 
 app.Run();

@@ -15,8 +15,6 @@ public partial class TMessage
 
     public DateTime SentAt { get; set; }
 
-    public DateTime? DeliveredAt { get; set; }
-
     public DateTime? ViewedAt { get; set; }
 
     public bool IsDeletedBySender { get; set; }

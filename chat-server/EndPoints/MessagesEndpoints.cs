@@ -11,6 +11,7 @@ namespace doar_chat.EndPoints
         {
             var group = app.MapGroup("/messages");
 
+            // Get Conversation with another user
             group.MapGet("/with/{userId:int}", async (int userId, HttpContext context, MessagesLogic logic) =>
             {
                 var currentUserId = GetCurrentUserId(context);
@@ -18,11 +19,20 @@ namespace doar_chat.EndPoints
                 return Results.Ok(messages);
             });
 
+            // Send Message to another user
             group.MapPost("/", async (SendMessageRequest request, HttpContext context, MessagesLogic logic) =>
             {
                 var currentUserId = GetCurrentUserId(context);
                 var message = await logic.SendAsync(currentUserId, request.ReceiverUserId, request.Content);
                 return Results.Created($"/messages/{message.Id}", message);
+            });
+
+            // Mark Message as Read
+            group.MapPost("/{messageId:int}/read", async (int messageId, HttpContext context, MessagesLogic logic) =>
+            {
+                var currentUserId = GetCurrentUserId(context);
+                var message = await logic.MarkAsReadAsync(messageId, currentUserId);
+                return Results.Ok(message);
             });
 
             return app;
