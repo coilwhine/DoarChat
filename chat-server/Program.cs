@@ -23,6 +23,7 @@ if (jwtOptions is null ||
 }
 builder.Services.AddSingleton(jwtOptions);
 builder.Services.AddScoped<AuthLogic>();
+builder.Services.AddScoped<UsersLogic>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
@@ -57,7 +58,12 @@ builder.Services
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 builder.Services.AddCors(options =>
 {
@@ -101,5 +107,6 @@ app.UseAuthorization();
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
 app.MapAuthEndpoints();
+app.MapUsersEndpoints();
 
 app.Run();

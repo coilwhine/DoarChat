@@ -28,6 +28,7 @@ namespace doar_chat.Logic
 
             email = email.Trim().ToLowerInvariant();
             var exists = await _db.TUsers.AnyAsync(u => u.Email == email);
+
             if (exists)
             {
                 throw new ApiException(StatusCodes.Status409Conflict, "User already exists.");

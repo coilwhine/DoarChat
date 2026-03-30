@@ -8,6 +8,7 @@ namespace doar_chat.EndPoints
         public static IEndpointRouteBuilder MapAuthEndpoints(this IEndpointRouteBuilder app)
         {
             var group = app.MapGroup("/auth");
+            group.AllowAnonymous();
 
             group.MapPost("/register", async (RegisterRequest request, AuthLogic logic) =>
             {

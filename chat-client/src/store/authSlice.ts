@@ -1,7 +1,29 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import localStorageService from "../Services/LocalStorageService";
-import type { AuthResponse } from "../Models/User.model";
-import type { AuthState } from "../Models/AuthState.model";
+import localStorageService from "../Services/LocalStorage.Service";
+import type { AuthResponse } from "../Models/Auth.model";
+import type { AuthState } from "../Models/Auth.model";
+
+const baseAuthState: AuthState = {
+  loggedIn: false,
+  token: null,
+  user: {
+    email: null,
+    sub: null,
+    role: null,
+    nbf: null,
+    exp: null,
+    iat: null,
+    iss: null,
+    aud: null,
+  },
+};
+
+function createEmptyAuthState(): AuthState {
+  return {
+    ...baseAuthState,
+    user: { ...baseAuthState.user },
+  };
+}
 
 function loadInitialState(): AuthState {
   const storedState = localStorageService.getItem<typeof initialState>("auth");
@@ -10,20 +32,7 @@ function loadInitialState(): AuthState {
     return storedState;
   }
 
-  return {
-    loggedIn: false,
-    token: null,
-    user: {
-      email: null,
-      sub: null,
-      role: null,
-      nbf: null,
-      exp: null,
-      iat: null,
-      iss: null,
-      aud: null,
-    },
-  };
+  return createEmptyAuthState();
 }
 
 const initialState = loadInitialState();
@@ -42,7 +51,7 @@ const authSlice = createSlice({
     },
     logout() {
       localStorageService.removeItem("auth");
-      return initialState;
+      return createEmptyAuthState();
     },
   },
 });

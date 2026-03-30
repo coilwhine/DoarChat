@@ -5,7 +5,7 @@ import "./LoginForm.scss";
 import { useAppDispatch } from "../../../../store/hooks";
 import authService from "../../../../Services/Auth.Service";
 import { login } from "../../../../store/authSlice";
-import type { AuthCredentials } from "../../../../Models/User.model";
+import type { AuthCredentials } from "../../../../Models/Auth.model";
 
 interface LoginFormProps {}
 

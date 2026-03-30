@@ -5,7 +5,7 @@ import "./RegisterForm.scss";
 import { useAppDispatch } from "../../../../store/hooks";
 import { login } from "../../../../store/authSlice";
 import { useNavigate } from "react-router-dom";
-import type { RegistrationData } from "../../../../Models/User.model";
+import type { RegistrationData } from "../../../../Models/Auth.model";
 
 function RegisterForm(): ReactElement {
   const dispatch = useAppDispatch();

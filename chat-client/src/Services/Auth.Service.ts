@@ -1,24 +1,22 @@
-import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import type {
   AuthCredentials,
   AuthResponse,
   JwtPayload,
   RegistrationData,
-} from "../Models/User.model";
+} from "../Models/Auth.model";
+import apiClient from "./ApiClient";
 
 class AuthService {
-  private readonly serverUrl = import.meta.env.VITE_SERVER_URL;
-
   public async register(user: RegistrationData): Promise<AuthResponse> {
-    await axios.post(`${this.serverUrl}/auth/register`, {
+    await apiClient.post("/auth/register", {
       name: user.name,
       email: user.email,
       password: user.password,
     });
 
-    const { data } = await axios.post<{ token: string }>(
-      `${this.serverUrl}/auth/login`,
+    const { data } = await apiClient.post<{ token: string }>(
+      "/auth/login",
       { email: user.email, password: user.password },
     );
     const token = data.token;
@@ -30,8 +28,8 @@ class AuthService {
   }
 
   public async login(loginData: AuthCredentials): Promise<AuthResponse> {
-    const { data } = await axios.post<{ token: string }>(
-      `${this.serverUrl}/auth/login`,
+    const { data } = await apiClient.post<{ token: string }>(
+      "/auth/login",
       { email: loginData.email, password: loginData.password },
     );
     const token = data.token;

@@ -1,7 +1,7 @@
 import { useState, type ReactElement } from "react";
 import "./AuthPage.scss";
-import RegisterForm from "./RegisterForm/RegisterForm";
 import LoginForm from "./LoginForm/LoginForm";
+import RegisterForm from "./RegisterForm/RegisterForm";
 
 enum FormType {
   Register,

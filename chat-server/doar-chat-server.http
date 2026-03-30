@@ -1,3 +1,7 @@
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2IiwiZW1haWwiOiJoZW4uZGFuaWVsNDdAZ21haWwuY29tIiwicm9sZSI6IjEiLCJuYmYiOjE3NzQ4NDEyNDIsImV4cCI6MTc3NDg0NDg0MiwiaWF0IjoxNzc0ODQxMjQyLCJpc3MiOiJkb2FyLWNoYXQiLCJhdWQiOiJkb2FyLWNoYXQtdXNlcnMifQ.m_wuFnhesMP_8nYyF2Nas2bRM5goYQleiN7zKZBv7Mg
+
+# Create new user account
 POST http://localhost:5207/auth/register
 Content-Type: application/json
 
@@ -8,6 +12,7 @@ Content-Type: application/json
 }
 
 ###
+# Login and get token
 POST http://localhost:5207/auth/login
 Content-Type: application/json
 
@@ -15,3 +20,13 @@ Content-Type: application/json
   "email": "test@example.com",
   "password": "P@ssw0rd!"
 }
+
+###
+# List all registered users
+GET http://localhost:5207/users
+Authorization: Bearer {{token}}
+
+###
+# Delete user by id
+DELETE http://localhost:5207/users/1
+Authorization: Bearer {{token}}
