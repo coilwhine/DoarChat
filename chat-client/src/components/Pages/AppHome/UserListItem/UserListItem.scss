@@ -1,0 +1,31 @@
+.UserListItem {
+  display: flex;
+  align-items: center;
+  gap: $size-8;
+  padding: $size-8 $size-4;
+
+  .initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $size-32;
+    height: $size-32;
+    border-radius: 50%;
+    background: $color-brand-gray-light;
+    color: $color-brand-gray-dark;
+    font-weight: 700;
+    font-size: $font-sm;
+    letter-spacing: $size-1;
+    flex-shrink: 0;
+  }
+
+  .name {
+    font-size: $font-sm;
+    color: $color-text;
+  }
+
+  .compact {
+    justify-content: center;
+    padding: $size-4 0;
+  }
+}

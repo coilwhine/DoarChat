@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import localStorageService from "../Services/LocalStorage.Service";
+import localStorageService from "../Services/LocalStorage.service";
 import type { AuthResponse } from "../Models/Auth.model";
 import type { AuthState } from "../Models/Auth.model";
 

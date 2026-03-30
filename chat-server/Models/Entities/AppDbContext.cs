@@ -17,11 +17,12 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<TMessage> TMessages { get; set; }
+
     public virtual DbSet<TUser> TUsers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=localhost;Database=DoarChat;Trusted_Connection=True;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:Default");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -30,6 +31,26 @@ public partial class AppDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__Roles__3214EC076C0CD1A0");
 
             entity.Property(e => e.Name).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<TMessage>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__T_Messag__3214EC07B18360B7");
+
+            entity.ToTable("T_Messages");
+
+            entity.Property(e => e.Content).HasMaxLength(1000);
+            entity.Property(e => e.SentAt).HasDefaultValueSql("(sysutcdatetime())");
+
+            entity.HasOne(d => d.ReceiverUser).WithMany(p => p.TMessageReceiverUsers)
+                .HasForeignKey(d => d.ReceiverUserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_T_Messages_ReceiverUser");
+
+            entity.HasOne(d => d.SenderUser).WithMany(p => p.TMessageSenderUsers)
+                .HasForeignKey(d => d.SenderUserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_T_Messages_SenderUser");
         });
 
         modelBuilder.Entity<TUser>(entity =>

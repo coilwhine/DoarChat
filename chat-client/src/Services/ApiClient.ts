@@ -1,5 +1,5 @@
 import axios from "axios";
-import localStorageService from "./LocalStorage.Service";
+import localStorageService from "./LocalStorage.service";
 import type { AuthState } from "../Models/Auth.model";
 
 const apiClient = axios.create({
@@ -21,6 +21,14 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (axios.isAxiosError(error)) {
+      if (error.response?.status === 401) {
+        localStorageService.removeItem("auth");
+        if (window.location.pathname !== "/auth") {
+          window.location.href = "/auth";
+        }
+        return Promise.reject(new Error("Unauthorized"));
+      }
+
       const serverMessage =
         error.response?.data?.error ?? error.response?.data?.message;
       if (serverMessage) {

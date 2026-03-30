@@ -1,2 +1,17 @@
 .AppHome {
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  gap: $size-16;
+}
+
+.UsersDrawer {
+  .item {
+    margin-bottom: $size-8;
+    border-radius: $radius-md;
+  }
+
+  .item:last-child {
+    margin-bottom: 0;
+  }
 }

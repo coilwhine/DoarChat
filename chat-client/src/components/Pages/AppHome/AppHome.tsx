@@ -1,11 +1,22 @@
 import type { ReactElement } from "react";
-import { useAppSelector } from "../../../store/hooks";
+import { useState } from "react";
 import "./AppHome.scss";
+import UsersDrawer from "./UsersDrawer";
+import ChatPane from "./ChatPane/ChatPane";
+import type { User } from "../../../Models/User.model";
 
 function AppHome(): ReactElement {
-  const user = useAppSelector((state) => state.auth.user);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-  return <div className="AppHome Page"></div>;
+  return (
+    <div className="AppHome Page">
+      <UsersDrawer
+        selectedUserId={selectedUser?.id ?? null}
+        onSelectUser={(user) => setSelectedUser(user)}
+      />
+      <ChatPane selectedUser={selectedUser} />
+    </div>
+  );
 }
 
 export default AppHome;

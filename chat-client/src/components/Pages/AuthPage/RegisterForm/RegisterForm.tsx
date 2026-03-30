@@ -1,6 +1,6 @@
 import { type ReactElement } from "react";
 import { useForm } from "react-hook-form";
-import authService from "../../../../Services/Auth.Service";
+import authService from "../../../../Services/Auth.service";
 import "./RegisterForm.scss";
 import { useAppDispatch } from "../../../../store/hooks";
 import { login } from "../../../../store/authSlice";

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import "./LoginForm.scss";
 import { useAppDispatch } from "../../../../store/hooks";
-import authService from "../../../../Services/Auth.Service";
+import authService from "../../../../Services/Auth.service";
 import { login } from "../../../../store/authSlice";
 import type { AuthCredentials } from "../../../../Models/Auth.model";
 

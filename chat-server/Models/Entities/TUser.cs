@@ -18,4 +18,8 @@ public partial class TUser
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
+
+    public virtual ICollection<TMessage> TMessageReceiverUsers { get; set; } = new List<TMessage>();
+
+    public virtual ICollection<TMessage> TMessageSenderUsers { get; set; } = new List<TMessage>();
 }

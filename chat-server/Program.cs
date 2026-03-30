@@ -24,6 +24,7 @@ if (jwtOptions is null ||
 builder.Services.AddSingleton(jwtOptions);
 builder.Services.AddScoped<AuthLogic>();
 builder.Services.AddScoped<UsersLogic>();
+builder.Services.AddScoped<MessagesLogic>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
@@ -108,5 +109,6 @@ app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
 app.MapAuthEndpoints();
 app.MapUsersEndpoints();
+app.MapMessagesEndpoints();
 
 app.Run();

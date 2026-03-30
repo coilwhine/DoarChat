@@ -4,7 +4,14 @@
   flex-direction: column;
   background: $color-bg;
 
+  .AppMain {
+    flex: 1;
+    position: relative;
+    display: flex;
+  }
+
   .Page {
-    padding: $size-16;
+    flex: 1;
+    min-height: 0;
   }
 }
