@@ -7,6 +7,7 @@ const baseAuthState: AuthState = {
   loggedIn: false,
   token: null,
   user: {
+    name: null,
     email: null,
     sub: null,
     role: null,
@@ -29,6 +30,11 @@ function loadInitialState(): AuthState {
   const storedState = localStorageService.getItem<typeof initialState>("auth");
 
   if (storedState) {
+    const sub = storedState.user?.sub;
+    if (typeof sub === "string") {
+      const parsed = Number(sub);
+      storedState.user.sub = Number.isFinite(parsed) ? parsed : null;
+    }
     return storedState;
   }
 
@@ -45,7 +51,15 @@ const authSlice = createSlice({
       const { token, user } = action.payload;
       state.loggedIn = true;
       state.token = token;
-      state.user = { ...state.user, ...(user ?? {}) };
+      state.user = {
+        ...state.user,
+        ...(user ?? {}),
+        name: user?.name ?? null,
+        sub:
+          user?.sub != null && Number.isFinite(Number(user.sub))
+            ? Number(user.sub)
+            : null,
+      };
 
       localStorageService.setItem("auth", state);
     },

@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
   Box,
@@ -12,12 +12,13 @@ import {
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import usersService from "../../../Services/Users.service";
-import UserListItem from "./UserListItem/UserListItem";
-import type { User } from "../../../Models/User.model";
+import usersService from "../../../../Services/Users.service";
+import UserListItem from "../UserListItem/UserListItem";
+import type { User } from "../../../../Models/User.model";
+import { useAppSelector } from "../../../../store/hooks";
 
 type UsersDrawerProps = {
-  selectedUserId: string | null;
+  selectedUserId: number | null;
   onSelectUser: (user: User) => void;
 };
 
@@ -29,6 +30,7 @@ function UsersDrawer({
 
   const drawerWidthOpen = 320;
   const drawerWidthClosed = 72;
+  const currentUserId = useAppSelector((state) => state.auth.user.sub);
 
   const usersQuery = useQuery({
     queryKey: ["users"],
@@ -126,21 +128,23 @@ function UsersDrawer({
               overflowY: "auto",
             }}
           >
-            {usersQuery.data?.map((u) => (
-              <ListItemButton
-                key={u.id}
-                className="item"
-                disableRipple
-                selected={selectedUserId === u.id}
-                onClick={() => onSelectUser(u)}
-                sx={{
-                  justifyContent: open ? "flex-start" : "center",
-                  px: open ? 2 : 1,
-                }}
-              >
-                <UserListItem user={u} compact={!open} />
-              </ListItemButton>
-            ))}
+            {usersQuery.data
+              ?.filter((u) => u.id !== currentUserId)
+              .map((u) => (
+                <ListItemButton
+                  key={u.id}
+                  className="item"
+                  disableRipple
+                  selected={selectedUserId === u.id}
+                  onClick={() => onSelectUser(u)}
+                  sx={{
+                    justifyContent: open ? "flex-start" : "center",
+                    px: open ? 2 : 1,
+                  }}
+                >
+                  <UserListItem user={u} compact={!open} />
+                </ListItemButton>
+              ))}
           </List>
         </Box>
       </Drawer>

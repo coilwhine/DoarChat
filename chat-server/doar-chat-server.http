@@ -1,5 +1,5 @@
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2IiwiZW1haWwiOiJoZW4uZGFuaWVsNDdAZ21haWwuY29tIiwicm9sZSI6IjEiLCJuYmYiOjE3NzQ4NDEyNDIsImV4cCI6MTc3NDg0NDg0MiwiaWF0IjoxNzc0ODQxMjQyLCJpc3MiOiJkb2FyLWNoYXQiLCJhdWQiOiJkb2FyLWNoYXQtdXNlcnMifQ.m_wuFnhesMP_8nYyF2Nas2bRM5goYQleiN7zKZBv7Mg
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2IiwiZW1haWwiOiJoZW4uZGFuaWVsNDdAZ21haWwuY29tIiwicm9sZSI6IjEiLCJuYmYiOjE3NzQ4NDk0MTUsImV4cCI6MTc3NDg1MzAxNSwiaWF0IjoxNzc0ODQ5NDE1LCJpc3MiOiJkb2FyLWNoYXQiLCJhdWQiOiJkb2FyLWNoYXQtdXNlcnMifQ.XT_B9iZjnASNi4mO4Vls7ryGHj9Wofxo_Fa4WkyU8m8
 
 # Create new user account
 POST http://localhost:5207/auth/register
@@ -30,3 +30,19 @@ Authorization: Bearer {{token}}
 # Delete user by id
 DELETE http://localhost:5207/users/1
 Authorization: Bearer {{token}}
+
+###
+# Get conversation with user
+GET http://localhost:5207/messages/with/2
+Authorization: Bearer {{token}}
+
+###
+# Send message
+POST http://localhost:5207/messages
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "receiverUserId": 5,
+  "content": "Hey, how are you?"
+}

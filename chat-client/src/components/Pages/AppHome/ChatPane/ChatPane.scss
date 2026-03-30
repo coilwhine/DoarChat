@@ -6,6 +6,7 @@
   border: 0.0625rem solid $color-border;
   border-radius: $radius-md;
   margin: $size-16;
+  overflow: hidden;
 
   .header {
     padding: $size-16;
@@ -19,10 +20,18 @@
     padding: $size-16;
     overflow: auto;
     min-height: 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .empty {
     color: $color-text-muted;
     font-size: $font-sm;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: $size-8;
   }
 }

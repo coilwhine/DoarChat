@@ -16,6 +16,7 @@ export interface AuthResponse {
 
 export interface JwtPayload {
   sub: string;
+  name: string;
   email: string;
   role: string;
   nbf: number;
@@ -29,8 +30,9 @@ export interface AuthState {
   loggedIn: boolean;
   token: string | null;
   user: {
+    name: string | null;
     email: string | null;
-    sub: string | null;
+    sub: number | null;
     role: string | null;
     nbf: number | null;
     exp: number | null;

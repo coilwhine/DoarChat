@@ -30,7 +30,8 @@ namespace doar_chat.EndPoints
 
         private static int GetCurrentUserId(HttpContext context)
         {
-            var raw = context.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            var raw = context.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                ?? context.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
             if (!int.TryParse(raw, out var userId))
             {
                 throw new ApiException(StatusCodes.Status401Unauthorized, "Invalid token.");

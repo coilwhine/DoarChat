@@ -84,6 +84,7 @@ namespace doar_chat.Logic
             {
                 new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new(JwtRegisteredClaimNames.Email, user.Email),
+                new(JwtRegisteredClaimNames.Name, user.Name),
                 new(ClaimTypes.Role, user.Role.ToString())
             };
 

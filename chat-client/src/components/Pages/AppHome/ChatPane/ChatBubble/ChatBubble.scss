@@ -1,0 +1,52 @@
+.ChatBubble {
+  max-width: 70%;
+  padding: $size-12 $size-16;
+  border-radius: $radius-lg;
+  background: $color-surface;
+  border: 0.0625rem solid $color-border;
+  color: $color-text;
+  box-shadow: $shadow-sm;
+  align-self: flex-start;
+
+  &.mine {
+    background: $color-brand-red-light;
+    border-color: $color-brand-red;
+    color: $color-white;
+    align-self: flex-end;
+
+    .time {
+      color: $color-text-muted-inverse;
+    }
+  }
+
+  .text {
+    font-size: $font-sm;
+    line-height: 1.4;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: $size-8;
+    gap: $size-8;
+    font-size: $font-xs;
+
+    .time {
+      color: $color-text-muted;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      letter-spacing: $size-1;
+      color: $color-text-muted;
+
+      &.read {
+        color: $color-info;
+      }
+    }
+  }
+}

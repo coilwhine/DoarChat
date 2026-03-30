@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
 import "./AppHome.scss";
-import UsersDrawer from "./UsersDrawer";
+import UsersDrawer from "./UsersDrawer/UsersDrawer";
 import ChatPane from "./ChatPane/ChatPane";
 import type { User } from "../../../Models/User.model";
 

@@ -1,0 +1,28 @@
+.ChatInput {
+  display: flex;
+  gap: $size-8;
+  padding: $size-12 $size-16;
+  border-top: 0.0625rem solid $color-border;
+  background: $color-surface;
+
+  .field {
+    flex: 1;
+    padding: $size-8 $size-12;
+    border: 0.0625rem solid $color-border;
+    border-radius: $radius-sm;
+    background: $color-surface;
+  }
+
+  .send {
+    padding: $size-8 $size-16;
+    border: 0;
+    border-radius: $radius-md;
+    background: $color-brand-red;
+    color: $color-white;
+    cursor: pointer;
+
+    &:hover {
+      background: $color-brand-red-dark;
+    }
+  }
+}
