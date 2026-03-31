@@ -70,7 +70,6 @@ builder.Services
             },
             OnTokenValidated = (context) =>
             {
-                Console.WriteLine(context);
                 return Task.CompletedTask;
             }
         };

@@ -94,7 +94,7 @@ function ChatPane({ selectedUser }: ChatPaneProps): ReactElement {
           </div>
         )}
       </div>
-      <ChatInput receiverUserId={receiverUserId} />
+      {receiverUserId && <ChatInput receiverUserId={receiverUserId} />}
     </section>
   );
 }

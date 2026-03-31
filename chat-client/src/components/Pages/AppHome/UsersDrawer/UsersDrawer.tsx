@@ -26,11 +26,16 @@ function UsersDrawer({
   selectedUserId,
   onSelectUser,
 }: UsersDrawerProps): ReactElement {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const drawerWidthOpen = 320;
   const drawerWidthClosed = 72;
   const currentUserId = useAppSelector((state) => state.auth.user.sub);
+
+  function userClicked(user: User) {
+    console.log("USER CLICKED!", user);
+    onSelectUser(user);
+  }
 
   const usersQuery = useQuery({
     queryKey: ["users"],
@@ -136,7 +141,7 @@ function UsersDrawer({
                   className="item"
                   disableRipple
                   selected={selectedUserId === u.id}
-                  onClick={() => onSelectUser(u)}
+                  onClick={() => userClicked(u)}
                   sx={{
                     justifyContent: open ? "flex-start" : "center",
                     px: open ? 2 : 1,

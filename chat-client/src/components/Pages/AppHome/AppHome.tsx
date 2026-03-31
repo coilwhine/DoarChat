@@ -1,17 +1,28 @@
-import type { ReactElement } from "react";
-import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import "./AppHome.scss";
-import UsersDrawer from "./UsersDrawer/UsersDrawer";
-import ChatPane from "./ChatPane/ChatPane";
+import type { ReactElement } from "react";
+import { useEffect, useRef, useState } from "react";
+import type {
+  MessageItem,
+  MessageReadEvent,
+  UserDeletedEvent,
+  UserRegisteredEvent,
+} from "../../../Models/SignalREvents.model";
 import type { User } from "../../../Models/User.model";
-import { useAppSelector } from "../../../store/hooks";
 import chatHub from "../../../Services/ChatHub.service";
+import { useAppSelector } from "../../../store/hooks";
+import "./AppHome.scss";
+import ChatPane from "./ChatPane/ChatPane";
+import UsersDrawer from "./UsersDrawer/UsersDrawer";
 
 function AppHome(): ReactElement {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const selectedUserIdRef = useRef<number | null>(null);
   const isLoggedIn = useAppSelector((state) => state.auth.loggedIn);
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    selectedUserIdRef.current = selectedUser?.id ?? null;
+  }, [selectedUser?.id]);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -25,20 +36,27 @@ function AppHome(): ReactElement {
 
     const connection = chatHub.getConnection();
 
-    const handleMessageReceived = () => {
+    const handleMessageReceived = (payload: MessageItem) => {
+      console.log("handleMessageReceived", payload);
       queryClient.invalidateQueries({ queryKey: ["messages"] });
     };
 
-    const handleMessageRead = () => {
+    const handleMessageRead = (payload: MessageReadEvent) => {
+      console.log("handleMessageRead", payload);
       queryClient.invalidateQueries({ queryKey: ["messages"] });
     };
 
-    const handleUserRegistered = () => {
+    const handleUserRegistered = (payload: UserRegisteredEvent) => {
+      console.log("handleUserRegistered", payload);
       queryClient.invalidateQueries({ queryKey: ["users"] });
     };
 
-    const handleUserDeleted = () => {
+    const handleUserDeleted = (payload: UserDeletedEvent) => {
+      console.log("handleUserDeleted", payload);
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      if (selectedUserIdRef.current === payload.id) {
+        setSelectedUser(null);
+      }
     };
 
     connection.on("MessageReceived", handleMessageReceived);
