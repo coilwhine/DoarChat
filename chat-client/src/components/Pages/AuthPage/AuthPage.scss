@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: $size-24;
+  margin: $size-24;
 
   .authForm {
     display: flex;

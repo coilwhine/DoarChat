@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import type { User } from "../../../../Models/User.model";
 import type { Message } from "../../../../Models/Message.model";
@@ -17,6 +17,7 @@ function ChatPane({ selectedUser }: ChatPaneProps): ReactElement {
   const receiverUserId = selectedUser ? selectedUser.id : null;
   const currentUserId = useAppSelector((state) => state.auth.user.sub);
   const queryClient = useQueryClient();
+  const bodyRef = useRef<HTMLDivElement | null>(null);
 
   const messagesQuery = useQuery({
     queryKey: ["messages", receiverUserId],
@@ -33,11 +34,14 @@ function ChatPane({ selectedUser }: ChatPaneProps): ReactElement {
     const unread = messagesQuery.data.filter(
       (m) => m.receiverUserId === currentUserId && !m.viewedAt,
     );
+
     if (unread.length === 0) return;
 
     const viewedAt = new Date().toISOString();
+
     queryClient.setQueryData<Message[]>(["messages", receiverUserId], (old) => {
       if (!old) return old;
+
       return old.map((m) =>
         unread.some((u) => u.id === m.id)
           ? { ...m, viewedAt: m.viewedAt ?? viewedAt }
@@ -45,7 +49,7 @@ function ChatPane({ selectedUser }: ChatPaneProps): ReactElement {
       );
     });
 
-    void Promise.all(
+    Promise.all(
       unread.map((m) =>
         messagesService.markAsRead(m.id).catch((error) => {
           console.error("Failed to mark message as read:", error);
@@ -54,10 +58,16 @@ function ChatPane({ selectedUser }: ChatPaneProps): ReactElement {
     );
   }, [receiverUserId, currentUserId, messagesQuery.data, queryClient]);
 
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+  }, [receiverUserId, messagesQuery.data?.length]);
+
   return (
     <section className="ChatPane">
       <div className="header">{selectedUser ? selectedUser.name : "Chat"}</div>
-      <div className="body">
+      <div className="body" ref={bodyRef}>
         {!selectedUser && (
           <div className="empty">Select a user to view messages.</div>
         )}
