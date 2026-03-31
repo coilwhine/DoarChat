@@ -146,24 +146,6 @@ function UsersDrawer({
                 </ListItemButton>
               ))}
           </List>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              px: open ? 0 : 1,
-            }}
-          >
-            <Divider />
-            <Typography
-              sx={{
-                fontSize: "0.875rem",
-                textAlign: "center",
-                width: "100%",
-              }}
-            >
-              click on a user to start chatting
-            </Typography>
-          </Box>
         </Box>
       </Drawer>
     </div>
