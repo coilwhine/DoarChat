@@ -72,6 +72,11 @@ namespace doar_chat.Logic
                 throw new ApiException(StatusCodes.Status401Unauthorized, "Invalid credentials.");
             }
 
+            if (user.DeletedAt is not null)
+            {
+                throw new ApiException(StatusCodes.Status403Forbidden, "User is deleted.");
+            }
+
             var verification = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
             if (verification == PasswordVerificationResult.Failed)
             {
