@@ -33,7 +33,7 @@ function Header(): ReactElement {
   return (
     <header className="AppHeader">
       <div className="inner">
-        <Link className="brand" to="/main">
+        <Link className="brand" to="/app">
           Israel Post Chat
         </Link>
 

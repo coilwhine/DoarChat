@@ -20,7 +20,7 @@ function publicOnlyLoader() {
   const isAuthed = state.auth.loggedIn;
 
   if (isAuthed) {
-    return redirect("/main");
+    return redirect("/app");
   }
 
   return null;
@@ -30,7 +30,7 @@ function rootRedirectLoader() {
   const state = store.getState();
   const isAuthed = state.auth.loggedIn;
 
-  return redirect(isAuthed ? "/main" : "/auth");
+  return redirect(isAuthed ? "/app" : "/auth");
 }
 
 export const router = createBrowserRouter([
@@ -48,7 +48,7 @@ export const router = createBrowserRouter([
         loader: publicOnlyLoader,
       },
       {
-        path: "main",
+        path: "app",
         loader: requireAuthLoader,
         children: [
           {
@@ -56,6 +56,10 @@ export const router = createBrowserRouter([
             element: <AppHome />,
           },
         ],
+      },
+      {
+        path: "main",
+        loader: () => redirect("/app"),
       },
       {
         path: "*",
