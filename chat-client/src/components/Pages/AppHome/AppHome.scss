@@ -9,6 +9,7 @@
   .item {
     margin-bottom: $size-8;
     border-radius: $radius-md;
+    box-shadow: $shadow-sm;
   }
 
   .item:last-child {

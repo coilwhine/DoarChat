@@ -3,6 +3,7 @@
   align-items: center;
   gap: $size-8;
   padding: $size-8 $size-4;
+  min-width: 0;
 
   .initial {
     display: flex;
@@ -22,6 +23,11 @@
   .name {
     font-size: $font-sm;
     color: $color-text;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .compact {

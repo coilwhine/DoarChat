@@ -80,6 +80,13 @@ function ChatPane({ selectedUser }: ChatPaneProps): ReactElement {
             {messagesQuery.error?.message ?? "Unknown error"}
           </div>
         )}
+        {selectedUser &&
+          messagesQuery.data &&
+          messagesQuery.data.length === 0 && (
+            <div className="empty">
+              There are no messages currently with that user.
+            </div>
+          )}
         {selectedUser && messagesQuery.data && (
           <div className="list">
             {messagesQuery.data.map((m) => (
