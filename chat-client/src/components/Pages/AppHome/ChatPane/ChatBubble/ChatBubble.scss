@@ -10,12 +10,22 @@
 
   &.mine {
     background: $color-brand-red-light;
-    border-color: $color-brand-red;
+    border-color: $color-brand-red-lighter;
     color: $color-white;
     align-self: flex-end;
 
-    .time {
-      color: $color-text-muted-inverse;
+    .meta {
+      .time {
+        color: $color-text-muted-inverse;
+      }
+
+      .status {
+        color: $color-text-muted-inverse;
+
+        &.read {
+          color: #83a6ff;
+        }
+      }
     }
   }
 

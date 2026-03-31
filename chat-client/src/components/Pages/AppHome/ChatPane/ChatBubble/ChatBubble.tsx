@@ -19,20 +19,20 @@ function ChatBubble({
   return (
     <div className={`ChatBubble ${isMine ? "mine" : ""}`}>
       <div className="text">{content}</div>
-      {(time || isMine) && (
-        <div className="meta">
-          {time && <span className="time">{time}</span>}
-          {isMine && (
-            <span className={`status ${isRead ? "read" : "unread"}`}>
-              {isRead ? (
-                <DoneAllIcon fontSize="small" />
-              ) : (
-                <DoneIcon fontSize="small" />
-              )}
-            </span>
-          )}
-        </div>
-      )}
+
+      <div className="meta">
+        {time && <span className="time">{time}</span>}
+
+        {isMine && (
+          <span className={`status ${isRead ? "read" : "unread"}`}>
+            {isRead ? (
+              <DoneAllIcon fontSize="small" />
+            ) : (
+              <DoneIcon fontSize="small" />
+            )}
+          </span>
+        )}
+      </div>
     </div>
   );
 }
