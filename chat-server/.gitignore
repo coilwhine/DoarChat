@@ -21,11 +21,6 @@ logs/
 .env.*
 !.env.example
 
-## App settings (keep a sanitized template)
-appsettings.json
-appsettings.*.json
-!appsettings.example.json
-
 ## Rider / Resharper
 .idea/
 *.DotSettings.user
