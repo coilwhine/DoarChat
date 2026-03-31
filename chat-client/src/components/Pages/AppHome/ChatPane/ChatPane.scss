@@ -5,7 +5,8 @@
   background: $color-surface;
   border: 0.0625rem solid $color-border;
   border-radius: $radius-md;
-  margin: $size-16;
+  margin: $size-24;
+  min-height: 0;
   overflow: hidden;
 
   .header {

@@ -25,7 +25,7 @@ function Header(): ReactElement {
 
         {authData.loggedIn && (
           <button className="btn primary" onClick={logOutClick}>
-            LogOut
+            Log Out
           </button>
         )}
       </div>
