@@ -24,7 +24,7 @@ namespace doar_chat.Logic
                 .ToListAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             var user = await _db.TUsers.SingleOrDefaultAsync(u => u.Id == id);
             if (user is null)
@@ -32,24 +32,28 @@ namespace doar_chat.Logic
                 throw new ApiException(StatusCodes.Status404NotFound, "User not found.");
             }
 
-            if (user.DeletedAt is null)
+            if (user.DeletedAt is not null)
             {
-                user.DeletedAt = DateTime.UtcNow;
-                await _db.SaveChangesAsync();
-
-                var evt = new UserDeletedEvent(user.Id, user.DeletedAt.Value);
-                var deletedUserConnectionId = _connections.GetConnection(user.Id);
-
-                if (!string.IsNullOrWhiteSpace(deletedUserConnectionId))
-                {
-                    await _hub.Clients.AllExcept(deletedUserConnectionId)
-                        .SendAsync("UserDeleted", evt);
-                }
-                else
-                {
-                    await _hub.Clients.All.SendAsync("UserDeleted", evt);
-                }
+                return false;
             }
+
+            user.DeletedAt = DateTime.UtcNow;
+            await _db.SaveChangesAsync();
+
+            var evt = new UserDeletedEvent(user.Id, user.DeletedAt.Value);
+            var deletedUserConnectionId = _connections.GetConnection(user.Id);
+
+            if (!string.IsNullOrWhiteSpace(deletedUserConnectionId))
+            {
+                await _hub.Clients.AllExcept(deletedUserConnectionId)
+                    .SendAsync("UserDeleted", evt);
+            }
+            else
+            {
+                await _hub.Clients.All.SendAsync("UserDeleted", evt);
+            }
+
+            return true;
         }
     }
 }
