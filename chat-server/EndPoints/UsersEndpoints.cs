@@ -16,6 +16,12 @@ namespace doar_chat.EndPoints
                 return Results.Ok(users);
             });
 
+            group.MapGet("/{id:int}", async (int id, UsersLogic logic) =>
+            {
+                var user = await logic.GetByIdAsync(id);
+                return Results.Ok(user);
+            });
+
             group.MapDelete("/{id:int}", async (int id, HttpContext context, UsersLogic logic) =>
             {
                 var currentUserId = GetCurrentUserId(context);

@@ -24,6 +24,22 @@ namespace doar_chat.Logic
                 .ToListAsync();
         }
 
+        public async Task<UserListItem> GetByIdAsync(int id)
+        {
+            var user = await _db.TUsers
+                .AsNoTracking()
+                .Where(u => u.Id == id && u.DeletedAt == null)
+                .Select(u => new UserListItem(u.Id, u.Email, u.Name))
+                .SingleOrDefaultAsync();
+
+            if (user is null)
+            {
+                throw new ApiException(StatusCodes.Status404NotFound, "User not found.");
+            }
+
+            return user;
+        }
+
         public async Task<bool> DeleteAsync(int id)
         {
             var user = await _db.TUsers.SingleOrDefaultAsync(u => u.Id == id);
