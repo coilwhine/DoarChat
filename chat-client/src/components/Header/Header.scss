@@ -22,6 +22,12 @@
     letter-spacing: 0.0125rem;
   }
 
+  .actions {
+    display: flex;
+    gap: $size-12;
+    align-items: center;
+  }
+
   .nav {
     display: flex;
     gap: $size-16;

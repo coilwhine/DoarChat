@@ -8,6 +8,10 @@ class UsersService {
     const { data } = await apiClient.get<User[]>(`${this.baseRoute}/`);
     return data;
   }
+
+  public async deleteById(id: number): Promise<void> {
+    await apiClient.delete(`${this.baseRoute}/${id}`);
+  }
 }
 
 const usersService = new UsersService();

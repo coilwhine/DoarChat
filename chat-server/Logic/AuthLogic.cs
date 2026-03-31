@@ -8,13 +8,17 @@ using doar_chat.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.SignalR;
+using doar_chat.Contracts.Users;
+using doar_chat.Hubs;
 
 namespace doar_chat.Logic
 {
-    public class AuthLogic(AppDbContext db, JwtOptions jwtOptions)
+    public class AuthLogic(AppDbContext db, JwtOptions jwtOptions, IHubContext<ChatHub> hub)
     {
         private readonly AppDbContext _db = db;
         private readonly JwtOptions _jwtOptions = jwtOptions;
+        private readonly IHubContext<ChatHub> _hub = hub;
         private readonly PasswordHasher<TUser> _passwordHasher = new();
 
         public async Task<TUser> RegisterAsync(string email, string password, string name)
@@ -46,6 +50,9 @@ namespace doar_chat.Logic
 
             _db.TUsers.Add(user);
             await _db.SaveChangesAsync();
+
+            var evt = new UserRegisteredEvent(user.Id, user.Email, user.Name);
+            await _hub.Clients.All.SendAsync("UserRegistered", evt);
 
             return user;
         }

@@ -17,7 +17,7 @@ public partial class TUser
 
     public DateTime CreatedAt { get; set; }
 
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime? DeletedAt { get; set; }
 
     public virtual ICollection<TMessage> TMessageReceiverUsers { get; set; } = new List<TMessage>();
 

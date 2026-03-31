@@ -25,22 +25,32 @@ function AppHome(): ReactElement {
 
     const connection = chatHub.getConnection();
 
-    const handleMessageReceived = (payload: unknown) => {
-      console.log("MessageReceived", payload);
+    const handleMessageReceived = () => {
       queryClient.invalidateQueries({ queryKey: ["messages"] });
     };
 
-    const handleMessageRead = (payload: unknown) => {
-      console.log("MessageRead", payload);
+    const handleMessageRead = () => {
       queryClient.invalidateQueries({ queryKey: ["messages"] });
+    };
+
+    const handleUserRegistered = () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    };
+
+    const handleUserDeleted = () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     };
 
     connection.on("MessageReceived", handleMessageReceived);
     connection.on("MessageRead", handleMessageRead);
+    connection.on("UserRegistered", handleUserRegistered);
+    connection.on("UserDeleted", handleUserDeleted);
 
     return () => {
       connection.off("MessageReceived", handleMessageReceived);
       connection.off("MessageRead", handleMessageRead);
+      connection.off("UserRegistered", handleUserRegistered);
+      connection.off("UserDeleted", handleUserDeleted);
       void chatHub.stop();
     };
   }, [isLoggedIn, queryClient]);

@@ -1,6 +1,5 @@
-import type { ReactElement } from "react";
-import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import {
   Box,
   Divider,
@@ -10,12 +9,13 @@ import {
   ListItemButton,
   Typography,
 } from "@mui/material";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import usersService from "../../../../Services/Users.service";
-import UserListItem from "../UserListItem/UserListItem";
+import { useQuery } from "@tanstack/react-query";
+import type { ReactElement } from "react";
+import { useState } from "react";
 import type { User } from "../../../../Models/User.model";
+import usersService from "../../../../Services/Users.service";
 import { useAppSelector } from "../../../../store/hooks";
+import UserListItem from "../UserListItem/UserListItem";
 
 type UsersDrawerProps = {
   selectedUserId: number | null;

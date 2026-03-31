@@ -85,6 +85,27 @@ textarea {
       box-shadow: none;
     }
   }
+
+  &.danger {
+    box-shadow: $shadow-sm;
+    background: $color-error;
+    color: $color-white;
+    border-radius: $radius-md;
+    transition:
+      background 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover {
+      background: $color-brand-red-dark;
+      box-shadow: $shadow-md;
+    }
+
+    &:disabled {
+      background: $color-brand-gray;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  }
 }
 
 .error-message {
