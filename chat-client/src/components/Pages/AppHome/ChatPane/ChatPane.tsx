@@ -95,7 +95,12 @@ function ChatPane({ selectedUser }: ChatPaneProps): ReactElement {
                 content={m.content}
                 isMine={m.senderUserId === currentUserId}
                 isRead={Boolean(m.viewedAt)}
-                time={new Date(m.sentAt).toLocaleTimeString()}
+                time={new Date(m.sentAt).toLocaleString(undefined, {
+                  month: "short",
+                  day: "numeric",
+                  hour: "numeric",
+                  minute: "2-digit",
+                })}
               />
             ))}
           </div>
