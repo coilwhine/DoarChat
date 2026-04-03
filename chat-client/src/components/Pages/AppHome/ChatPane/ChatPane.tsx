@@ -8,6 +8,7 @@ import ChatInput from "./ChatInput/ChatInput";
 import messagesService from "../../../../Services/Messages.service";
 import ChatBubble from "./ChatBubble/ChatBubble";
 import { useAppSelector } from "../../../../store/hooks";
+import { formatLocalDateTime, toUtcIso } from "../../../../utils/dateTime";
 
 type ChatPaneProps = {
   selectedUser: User | null;
@@ -37,7 +38,7 @@ function ChatPane({ selectedUser }: ChatPaneProps): ReactElement {
 
     if (unread.length === 0) return;
 
-    const viewedAt = new Date().toISOString();
+    const viewedAt = toUtcIso();
 
     queryClient.setQueryData<Message[]>(["messages", receiverUserId], (old) => {
       if (!old) return old;
@@ -95,7 +96,7 @@ function ChatPane({ selectedUser }: ChatPaneProps): ReactElement {
                 content={m.content}
                 isMine={m.senderUserId === currentUserId}
                 isRead={Boolean(m.viewedAt)}
-                time={new Date(m.sentAt).toLocaleString(undefined, {
+                time={formatLocalDateTime(m.sentAt, {
                   month: "short",
                   day: "numeric",
                   hour: "numeric",
