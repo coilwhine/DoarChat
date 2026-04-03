@@ -1,5 +1,7 @@
 using System.Text.Json;
 using doar_chat.Models.Errors;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace doar_chat.Middleware
 {
@@ -22,10 +24,7 @@ namespace doar_chat.Middleware
             }
             catch (ApiException ex)
             {
-                if (context.Response.HasStarted)
-                {
-                    throw;
-                }
+                if (context.Response.HasStarted) throw;
 
                 context.Response.StatusCode = ex.StatusCode;
                 context.Response.ContentType = "application/json";
@@ -38,17 +37,19 @@ namespace doar_chat.Middleware
             }
             catch (Exception ex)
             {
-                if (context.Response.HasStarted)
-                {
-                    throw;
-                }
+                if (context.Response.HasStarted) throw;
 
                 _logger.LogError(ex, "Unhandled exception");
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 context.Response.ContentType = "application/json";
+
+                var isDev = context.RequestServices
+                    .GetRequiredService<IHostEnvironment>()
+                    .IsDevelopment();
+
                 var payload = JsonSerializer.Serialize(new
                 {
-                    error = "An unexpected error occurred.",
+                    error = isDev ? ex.Message : "An unexpected error occurred.",
                     traceId = context.TraceIdentifier
                 });
                 await context.Response.WriteAsync(payload);
